@@ -1,0 +1,3 @@
+﻿  FileName.cpp
+C:\Users\User\source\repos\Proiect faza 1\Proiect faza 1\FileName.cpp(204,13): warning C4326: return type of 'main' should be 'int' instead of 'void'
+  Proiect faza 1.vcxproj -> C:\Users\User\source\repos\Proiect faza 1\x64\Debug\Proiect faza 1.exe
