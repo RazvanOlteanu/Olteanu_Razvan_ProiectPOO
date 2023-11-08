@@ -16,8 +16,11 @@ private:
 	string dataRezervare;
 	int masaRezervare;
 	float durataRezervare; // cate ore stai
+	bool status;
 
 public:
+
+	//get-eri si set-eri
 
 	static int getNrTotalComenzi() {
 		return nrTotalComenzi;
@@ -40,7 +43,7 @@ public:
 	}
 
 	void setNrTelefon(string NrTelefon) {
-		if (this->nrTelefon.length() < 0) {
+		if (this->nrTelefon.length() > 9) {
 			this->nrTelefon = nrTelefon;
 		}
 	}
@@ -59,7 +62,7 @@ public:
 		return this->masaRezervare;
 	}
 
-	void setMasaRezervare() {
+	void setMasaRezervare(int masaRezervare) {
 		if (this->masaRezervare > 0) {
 			this->masaRezervare = masaRezervare;
 		}
@@ -69,11 +72,23 @@ public:
 		return this->durataRezervare;
 	}
 
-	void setDurataRezervare() {
+	void setDurataRezervare(float durataRezervare) {
 		if (this->durataRezervare > 0) {
 			this->durataRezervare = durataRezervare;
 		}
 	}
+
+	bool getStatus() {
+		return this->status;
+	}
+
+	void setStatus(bool status) {
+		if (this->status == true || this->status == false) {
+			this->status = status;
+		}
+	}
+
+	// Constructorul de copiere
 
 	Rezervare(Rezervare& r1) : idRezervare(nrTotalComenzi++) {
 		this->numeClient = new char[strlen(r1.numeClient) + 1];
@@ -82,7 +97,10 @@ public:
 		this->dataRezervare = r1.dataRezervare;
 		this->masaRezervare = r1.masaRezervare;
 		this->durataRezervare = r1.durataRezervare;
+		this->status = r1.status;
 	}
+
+	// Constructorul fara parametrii
 
 	Rezervare() : idRezervare(nrTotalComenzi++) {
 
@@ -92,7 +110,10 @@ public:
 		this->dataRezervare = "8 august";
 		this->masaRezervare = 5;
 		this->durataRezervare = 1;
+		this->status = true;
 	}
+
+	// Constructori cu parametrii
 
 	Rezervare(string nrTelefon, string dataRezervare) : idRezervare(nrTotalComenzi) {
 		nrTotalComenzi++;
@@ -102,6 +123,7 @@ public:
 		this->dataRezervare = dataRezervare;
 		this->masaRezervare = 5;
 		this->durataRezervare = 1;
+		this->status = false;
 	}
 
 	Rezervare(const char* numeClient, string nrTelefon, int masaRezervare, float durataRezervare) : idRezervare(nrTotalComenzi) {
@@ -112,7 +134,10 @@ public:
 		this->dataRezervare = "8 august";
 		this->masaRezervare = masaRezervare;
 		this->durataRezervare = durataRezervare;
+		this->status = true;
 	}
+
+	// Destructorul
 
 	~Rezervare() {
 		delete[] numeClient;
@@ -124,10 +149,63 @@ public:
 			<< nrTelefon << " a facut o rezervare pe data de "
 			<< dataRezervare << " la masa "
 			<< masaRezervare << " cu durata de servire de "
-			<< durataRezervare << " ore "
+			<< durataRezervare << " ore,"
+			<< (status ? " in desfasurare" : " terminat")
 			<< endl;
 	}
+
+	// Supraincarcare Operatori
+
+	Rezervare operator=(const Rezervare& r) {
+		if (this != &r) {
+			this->numeClient = new char[strlen(r.numeClient) + 1];
+			strcpy(this->numeClient, r.numeClient);
+			this->nrTelefon = r.nrTelefon;
+			this->dataRezervare = r.dataRezervare;
+			this->masaRezervare = r.masaRezervare;
+			this->durataRezervare = r.durataRezervare;
+			this->status = r.status;
+			return *this;
+		}
+	}
+
+	Rezervare operator!() {
+		Rezervare copie = *this;
+		copie.status = !copie.status;
+		return copie;
+	}
+
+	friend ostream& operator<<(ostream& ost, const Rezervare& r);
+	friend istream& operator>>(istream& ist, Rezervare& r);
 };
+
+ostream& operator<<(ostream& ost, const Rezervare& r) {
+	ost << "Clientul cu numele "
+		<< r.numeClient << " avand numarul de telefon "
+		<< r.nrTelefon << " a facut o rezervare pe data de "
+		<< r.dataRezervare << " la masa "
+		<< r.masaRezervare << " cu durata de servire de "
+		<< r.durataRezervare << " ore "
+		<< (r.status ? "in desfasurare" : "terminat")
+		<< endl;
+	return ost;
+}
+
+istream& operator>>(istream& ist, Rezervare& r) {
+	cout << " Nume client: ";
+	ist >> r.numeClient;
+	cout << " Nr de Telefon: ";
+	ist >> r.nrTelefon;
+	cout << " Data rezervare: ";
+	ist >> r.dataRezervare;
+	cout << " Masa rezervare: ";
+	ist >> r.masaRezervare;
+	cout << " Durata rezervare: ";
+	ist >> r.durataRezervare;
+	cout << "Status rezervare: ";
+	ist >> r.status;
+	return ist;
+}
 
 int Rezervare::nrTotalComenzi = 0;
 
@@ -141,8 +219,11 @@ private:
 	float pret;
 	int durataMeniu; // cat dureaza prepararea in minute
 	string descriereMeniu;
+	bool vegan;
 
 public:
+
+	// get-eri si set-eri
 
 	static int getNrTotalMeniuri() {
 		return nrTotalMeniuri;
@@ -152,7 +233,7 @@ public:
 		return this->numeMeniu;
 	}
 
-	void setNumeClient(char* numeMeniuNou) {
+	void setNumeMeniu(char* numeMeniuNou) {
 		if (this->numeMeniu != NULL) {
 			delete[]this->numeMeniu;
 		}
@@ -190,13 +271,28 @@ public:
 		}
 	}
 
+	bool getVegan() {
+		return this->vegan;
+	}
+
+	void setVegan(bool vegan) {
+		if (this->vegan == true || this->vegan == false) {
+			this->vegan = vegan;
+		}
+	}
+
+	// Constructorul de copiere
+
 	Meniu(Meniu& meniu1) : idMeniu(nrTotalMeniuri++) {
 		this->numeMeniu = new char[strlen(meniu1.numeMeniu) + 1];
 		strcpy(this->numeMeniu, meniu1.numeMeniu);
 		this->pret = meniu1.pret;
 		this->durataMeniu = meniu1.durataMeniu;
 		this->descriereMeniu = meniu1.descriereMeniu;
+		this->vegan = meniu1.vegan;
 	}
+
+	// Constructorul fara parametrii
 
 	Meniu() : idMeniu(nrTotalMeniuri++) {
 		this->numeMeniu = new char[strlen("Pizza") + 1];
@@ -204,7 +300,10 @@ public:
 		this->pret = 100;
 		this->durataMeniu = 30;
 		this->descriereMeniu = "Carnivora";
+		this->vegan = false;
 	}
+
+	// Constructori cu parametrii
 
 	Meniu(float pret, int durataMeniu) : idMeniu(nrTotalMeniuri) {
 		nrTotalMeniuri++;
@@ -213,6 +312,7 @@ public:
 		this->pret = pret;
 		this->durataMeniu = durataMeniu;
 		this->descriereMeniu = "de legume";
+		this->vegan = true;
 	}
 
 	Meniu(const char* numeMeniu, float pret, string descriereMeniu) : idMeniu(nrTotalMeniuri) {
@@ -222,7 +322,10 @@ public:
 		this->pret = pret;
 		this->durataMeniu = 45;
 		this->descriereMeniu = descriereMeniu;
+		this->vegan = false;
 	}
+
+	// Destructorul
 
 	~Meniu() {
 		delete[] numeMeniu;
@@ -232,10 +335,60 @@ public:
 		cout << numeMeniu << ", "
 			<< descriereMeniu << " are pretul de "
 			<< pret << " RON " << "cu durata de preparare de "
-			<< durataMeniu << " minute "
+			<< durataMeniu << " minute, fiind "
+			<< (vegan ? " vegan" : " normal")
 			<< endl;
 	}
+
+	// Supraincarcare operatori
+
+	Meniu operator=(const Meniu& m) {
+		if (this != &m) {
+			if (numeMeniu != NULL) {
+				this->numeMeniu = new char[strlen(m.numeMeniu) + 1];
+				strcpy(this->numeMeniu, m.numeMeniu);
+			}
+			this->pret = m.pret;
+			this->durataMeniu = m.durataMeniu;
+			this->descriereMeniu = m.descriereMeniu;
+			this->vegan = m.vegan;
+			return *this;
+		}
+	}
+
+	Meniu operator!() {
+		Meniu copie = *this;
+		copie.vegan = !copie.vegan;
+		return copie;
+	}
+
+	friend ostream& operator<<(ostream& ost, const Meniu& m);
+	friend istream& operator>>(istream& ist, Meniu& m);
 };
+
+ostream& operator<<(ostream& ost, const Meniu& m) {
+	cout << m.numeMeniu << ", "
+		<< m.descriereMeniu << " are pretul de "
+		<< m.pret << " RON " << "cu durata de preparare de "
+		<< m.durataMeniu << " minute, fiind "
+		<< (m.vegan ? " vegan" : " normal")
+		<< endl;
+	return ost;
+}
+
+istream& operator>>(istream& ist, Meniu& m) {
+	cout << " Nume meniu: ";
+	ist >> m.numeMeniu;
+	cout << " Pret: ";
+	ist >> m.pret;
+	cout << " Durata meniu: ";
+	ist >> m.durataMeniu;
+	cout << " Descriere meniu: ";
+	ist >> m.descriereMeniu;
+	cout << "Felul meniului: ";
+	ist >> m.vegan;
+	return ist;
+}
 
 int Meniu::nrTotalMeniuri = 0;
 
@@ -251,8 +404,11 @@ private:
 	float salariu;
 	float bacsis;
 	int meseServite; // intr-o zi 
+	bool disponibil;
 
 public:
+
+	// get-eri si set-eri
 
 	static int getNrTotalOspatari() {
 		return nrTotalOspatari;
@@ -320,6 +476,18 @@ public:
 		}
 	}
 
+	bool getDisponibil() {
+		return this->disponibil;
+	}
+
+	void setDisponibil(bool disponibil) {
+		if (this->disponibil == true || this->disponibil == false) {
+			this->disponibil = disponibil;
+		}
+	}
+
+	// Constructorul de copiere
+
 	Ospatar(Ospatar& ospatar1) :idOspatar(nrTotalOspatari) {
 		this->nume = new char[strlen(ospatar1.nume) + 1];
 		strcpy(this->nume, ospatar1.nume);
@@ -328,7 +496,10 @@ public:
 		this->salariu = ospatar1.salariu;
 		this->bacsis = ospatar1.bacsis;
 		this->meseServite = ospatar1.meseServite;
+		this->disponibil = ospatar1.disponibil;
 	}
+
+	// Constructorul fara parametrii
 
 	Ospatar() : idOspatar(nrTotalOspatari++) {
 		this->nume = new char[strlen("Andrei") + 1];
@@ -338,7 +509,10 @@ public:
 		this->salariu = 3500;
 		this->bacsis = 100;
 		this->meseServite = 15;
+		this->disponibil = true;
 	}
+
+	// Constructori cu parametrii
 
 	Ospatar(const char* nume, int varsta) : idOspatar(nrTotalOspatari) {
 		nrTotalOspatari++;
@@ -349,6 +523,7 @@ public:
 		this->salariu = 5000;
 		this->bacsis = 150;
 		this->meseServite = 20;
+		this->disponibil = false;
 	}
 
 	Ospatar(const char* nume, int varsta, int experienta, float salariu, float bacsis, int meseServite) : idOspatar(nrTotalOspatari) {
@@ -360,7 +535,10 @@ public:
 		this->salariu = salariu;
 		this->bacsis = bacsis;
 		this->meseServite = meseServite;
+		this->disponibil = true;
 	}
+
+	// Destructorul
 
 	~Ospatar() {
 		delete[] nume;
@@ -373,14 +551,70 @@ public:
 			<< experienta << " ani, salariu pe luna de "
 			<< salariu << " RON, face bacsis de "
 			<< bacsis << " RON pe zi" << " si are o medie de "
-			<< meseServite << " mese servite pe zi"
+			<< meseServite << " mese servite pe zi, fiind "
+			<< (disponibil ? " disponibil" : " indisponibil")
 			<< endl;
 	}
 
 	friend void procesareRezervare(Ospatar& ospatar, Rezervare& rezervare, Meniu& meniu);
-
 	friend void medieBacsis(Ospatar& ospatar);
+
+	// Supraincarcare operatori
+
+	Ospatar operator=(const Ospatar& o) {
+		if (this != &o) {
+			this->nume = new char[strlen(o.nume) + 1];
+			strcpy(this->nume, o.nume);
+			this->varsta = o.varsta;
+			this->experienta = o.experienta;
+			this->salariu = o.salariu;
+			this->bacsis = o.bacsis;
+			this->meseServite = o.meseServite;
+			this->disponibil = o.disponibil;
+			return *this;
+		}
+	}
+
+	Ospatar operator!() {
+		Ospatar copie = *this;
+		copie.disponibil = !copie.disponibil;
+		return copie;
+	}
+
+	friend ostream& operator<<(ostream& ost, const Ospatar& o);
+	friend istream& operator>>(istream& ist, Ospatar& o);
 };
+
+ostream& operator<<(ostream& ost, const Ospatar& o) {
+	cout << "Ospatarul cu numele "
+		<< o.nume << " are varsta de "
+		<< o.varsta << " ani, experienta de "
+		<< o.experienta << " ani, salariu pe luna de "
+		<< o.salariu << " RON, face bacsis de "
+		<< o.bacsis << " RON pe zi" << " si are o medie de "
+		<< o.meseServite << " mese servite pe zi, fiind "
+		<< (o.disponibil ? " disponibil" : " indisponibil")
+		<< endl;
+	return ost;
+}
+
+istream& operator>>(istream& ist, Ospatar& o) {
+	cout << " Nume ospatar: ";
+	ist >> o.nume;
+	cout << " Varsta: ";
+	ist >> o.varsta;
+	cout << " Experienta: ";
+	ist >> o.experienta;
+	cout << " Salariu: ";
+	ist >> o.salariu;
+	cout << " Bacsis: ";
+	ist >> o.bacsis;
+	cout << " Mese servite: ";
+	ist >> o.meseServite;
+	cout << " Disponibilitate ";
+	ist >> o.disponibil;
+	return ist;
+}
 
 int Ospatar::nrTotalOspatari = 0;
 
@@ -441,4 +675,34 @@ int main() {
 
 	procesareRezervare(o3, rez1, m2);
 	medieBacsis(o1);
+
+	cout << endl;
+
+	rez1 = rez2;
+	rez1.afisareRezervare();
+
+	cout << endl;
+
+	m1 = m3;
+	m1.afisareMeniu();
+
+	cout << endl;
+
+	o2 = o3;
+	o2.afisareOspatar();
+
+	cout << rez2;
+	cout << m3;
+	cout << o2;
+
+	cin >> rez3;
+	cout << rez3;
+
+	cin >> m2;
+	cout << m2;
+
+	cin >> o3;
+	cout << o3;
+
+	return 0;
 }
