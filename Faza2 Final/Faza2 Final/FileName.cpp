@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include <cstring>
+
 using namespace std;
 
 // Domeniul - RESTAURANT
@@ -703,6 +704,58 @@ int main() {
 
 	cin >> o3;
 	cout << o3;
+
+	Rezervare rv[3];
+	Meniu mv[3];
+	Ospatar ov[3];
+
+	for (int i = 0; i <= 2; i++) {
+		cin >> rv[i];
+	}
+
+	for (int i = 0; i <= 2; i++) {
+		cin >> mv[i];
+	}
+
+	for (int i = 0; i <= 2; i++) {
+		cin >> ov[i];
+	}
+
+	for (int i = 0; i <= 2; i++) {
+		cout << rv[i] << "\n";
+	}
+
+	cout << "\n";
+
+	for (int i = 0; i <= 2; i++) {
+		cout << mv[i] << "\n";
+	}
+
+	cout << "\n";
+
+	for (int i = 0; i <= 2; i++) {
+		cout << ov[i] << "\n";
+	}
+
+	cout << "\n";
+
+	Meniu mm[2][2];
+
+	for (int i = 0; i <= 1; i++) {
+		for (int j = 0; j <= 1; j++) {
+			cin >> mm[i][j];
+		}
+	}
+
+	for (int i = 0; i <= 1; i++) {
+		for (int j = 0; j <= 1; j++) {
+			if (j != 1)
+				cout << mm[i][j] << " || ";
+			else
+				cout << mm[i][j];
+		}
+		cout << "\n";
+	}
 
 	return 0;
 }
