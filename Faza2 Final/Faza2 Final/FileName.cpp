@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include<iostream>
+#include <iostream>
 #include <cstring>
+#include <vector>
 
 using namespace std;
 
@@ -9,7 +10,6 @@ using namespace std;
 class Rezervare {
 
 private:
-
 	const int idRezervare;
 	static int nrTotalComenzi;
 	char* numeClient;
@@ -20,7 +20,6 @@ private:
 	bool status;
 
 public:
-
 	//get-eri si set-eri
 
 	static int getNrTotalComenzi() {
@@ -104,7 +103,6 @@ public:
 	// Constructorul fara parametrii
 
 	Rezervare() : idRezervare(nrTotalComenzi++) {
-
 		this->numeClient = new char[strlen("Razvan") + 1];
 		strcpy(this->numeClient, "Razvan");
 		this->nrTelefon = "0724048358";
@@ -159,6 +157,9 @@ public:
 
 	Rezervare operator=(const Rezervare& r) {
 		if (this != &r) {
+			if (this->numeClient != NULL) {
+				delete this->numeClient;
+			}
 			this->numeClient = new char[strlen(r.numeClient) + 1];
 			strcpy(this->numeClient, r.numeClient);
 			this->nrTelefon = r.nrTelefon;
@@ -489,7 +490,7 @@ public:
 
 	// Constructorul de copiere
 
-	Ospatar(Ospatar& ospatar1) :idOspatar(nrTotalOspatari) {
+	Ospatar(const Ospatar& ospatar1) :idOspatar(nrTotalOspatari) {
 		this->nume = new char[strlen(ospatar1.nume) + 1];
 		strcpy(this->nume, ospatar1.nume);
 		this->varsta = ospatar1.varsta;
@@ -586,6 +587,182 @@ public:
 	friend istream& operator>>(istream& ist, Ospatar& o);
 };
 
+class Restaurant {
+private:
+	int nrMeniuri;
+	Meniu* meniuri;
+	vector <Ospatar> ospatari;
+	string nume;
+	long long cifraDeAfaceri;
+	int capacitate; //locuri
+	string patron;
+
+public:
+
+	Meniu* getMeniuri() {
+		return this->meniuri;
+	}
+
+	void setMeniuri(Meniu* meniuri, int nrMeniuri) {
+		if (nrMeniuri > this->nrMeniuri) {
+			delete[]this->meniuri;
+			this->meniuri = new Meniu[nrMeniuri];
+		}
+		for (int i = 0; i < nrMeniuri; i++) {
+			this->meniuri[i] = meniuri[i];
+
+		}
+	}
+
+	int getNrMeniuri() {
+		return this->nrMeniuri;
+	}
+
+	void setNrMeniuri(int nrMeniuri) {
+		if (nrMeniuri > 0) {
+			this->nrMeniuri = nrMeniuri;
+		}
+	}
+
+	vector<Ospatar> getOspatari() {
+		return this->ospatari;
+	}
+
+	void setOspatari(Ospatar* ospatari, int nrOspatari) {
+		if (nrOspatari > 0) {
+			this->ospatari.clear();
+			for (int i = 0; i < nrOspatari; i++) {
+				this->ospatari.push_back(ospatari[i]);
+			}
+		}
+	}
+
+	string getNume() {
+		return this->nume;
+	}
+
+	void setNume(string nume) {
+		if (nume.length() > 3) {
+			this->nume = nume;
+		}
+	}
+
+	long long getCifraDeAfaceri() {
+		return this->cifraDeAfaceri;
+	}
+
+	void setCifraDeAfaceri(long long cifraDeAfaceri) {
+		if (cifraDeAfaceri > 0) {
+			this->cifraDeAfaceri = cifraDeAfaceri;
+		}
+	}
+
+	int getCapacitate() {
+		return this->capacitate;
+	}
+
+	void setCapacitate(int capacitate) {
+		if (capacitate > 0) {
+			this->capacitate = capacitate;
+		}
+	}
+
+	string getPatron() {
+		return this->patron;
+	}
+
+	void setPatron(string patron) {
+		if (patron.length() > 3) {
+			this->patron = patron;
+		}
+	}
+
+	// Constructorul de copiere
+
+	Restaurant(Restaurant& res1) {
+		this->nrMeniuri = res1.nrMeniuri;
+		this->meniuri = new Meniu[res1.nrMeniuri];
+		this->ospatari = res1.ospatari;
+		this->nume = res1.nume;
+		this->cifraDeAfaceri = res1.cifraDeAfaceri;
+		this->capacitate = res1.capacitate;
+		this->patron = res1.patron;
+	}
+
+	// Constructorul fara parametri
+
+	Restaurant() {
+		this->nrMeniuri = 2;
+		this->meniuri = new Meniu[nrMeniuri];
+		for (int i = 0; i < nrMeniuri; i++) {
+			this->meniuri[i] = Meniu();
+		}
+
+		for (int i = 0; i < 2; i++) {
+			this->ospatari.push_back(Ospatar());
+		}
+
+		this->nume = "Taverna";
+		this->cifraDeAfaceri = 1000000;
+		this->capacitate = 100;
+		this->patron = "Giovanni";
+	}
+
+
+	friend ostream& operator<<(ostream& ost, const Restaurant& res);
+	friend istream& operator>>(istream& ist, Restaurant& res);
+
+
+	Restaurant operator++() {
+		this->cifraDeAfaceri += 10000;
+		this->capacitate += 10;
+		return *this;
+	}
+};
+
+ostream& operator<<(ostream& ost, const Restaurant& res) {
+	ost << "Restaurantul "
+		<< res.nume << " al carui patron este "
+		<< res.patron << " are o cifra de afaceri de "
+		<< res.cifraDeAfaceri << "EURO, capacitatea de "
+		<< res.capacitate << " locuri, iar vectorul de meniuri este: ";
+	for (int i = 0; i < res.nrMeniuri; i++) {
+		ost << res.meniuri[i];
+		ost << "\n";
+	}
+	ost << " respectiv vectorul de ospatari: ";
+	for (int i = 0; i < res.ospatari.size(); i++) {
+		ost << res.ospatari[i];
+		ost << "\n";
+	}
+
+	return ost;
+}
+
+istream& operator>>(istream& ist, Restaurant& res) {
+	cout << "Nume restaurant: ";
+	ist >> res.nume;
+	cout << "Nume patron: ";
+	ist >> res.patron;
+	cout << "Cifra de afaceri: ";
+	ist >> res.cifraDeAfaceri;
+	cout << "Capacitate: ";
+	ist >> res.capacitate;
+	cout << "Meniuri: ";
+	for (int i = 0; i < res.nrMeniuri; i++) {
+		ist >> res.meniuri[i];
+		cout << "\n";
+	}
+
+	cout << "Ospatari: ";
+	for (int i = 0; i < res.ospatari.size(); i++) {
+		ist >> res.ospatari[i];
+		cout << "\n";
+	}
+	return ist;
+}
+
+
 ostream& operator<<(ostream& ost, const Ospatar& o) {
 	cout << "Ospatarul cu numele "
 		<< o.nume << " are varsta de "
@@ -633,9 +810,10 @@ void medieBacsis(Ospatar& ospatar) {
 	cout << "Ospatarul " << ospatar.nume << " a castigat in medie " << medie << " lei";
 }
 
+
 int main() {
 
-	Rezervare rez1;
+	/*Rezervare rez1;
 	rez1.afisareRezervare();
 	Rezervare rez2("0729988258", "9 mai");
 	rez2.afisareRezervare();
@@ -755,7 +933,54 @@ int main() {
 				cout << mm[i][j];
 		}
 		cout << "\n";
+	}*/
+
+	Restaurant restaurant1;
+	Restaurant restaurant2;
+
+	restaurant1.setCapacitate(500);
+	cout << restaurant1.getCapacitate();
+
+	cout << endl;
+
+	restaurant1.setCifraDeAfaceri(1000000);
+	cout << restaurant1.getCifraDeAfaceri();
+
+	cout << endl;
+
+	Meniu men[1];
+	men[0] = Meniu();
+
+	Ospatar osp[1];
+	osp[0] = Ospatar();
+
+	restaurant1.setMeniuri(men, 1);
+	for (int i = 0; i < restaurant1.getNrMeniuri(); i++) {
+		cout << restaurant1.getMeniuri()[i];
+		cout << endl;
 	}
+
+	restaurant1.setNrMeniuri(2);
+	cout << restaurant1.getNrMeniuri();
+	cout << endl;
+
+	restaurant1.setNume("Anonim");
+	cout << restaurant1.getNume();
+	cout << endl;
+
+	restaurant1.setOspatari(osp, 1);
+	//cout << restaurant1.getOspatari();
+	cout << endl;
+
+	restaurant1.setPatron("Pescobar");
+	cout << restaurant1.getPatron();
+	cout << endl;
+
+	cout << restaurant1;
+	cin >> restaurant2;
+
+	++restaurant1;
+	cout << restaurant1;
 
 	return 0;
 }
