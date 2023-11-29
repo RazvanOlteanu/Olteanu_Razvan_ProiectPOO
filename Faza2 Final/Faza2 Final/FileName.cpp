@@ -2,13 +2,13 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include<fstream>
 
 using namespace std;
 
 // Domeniul - RESTAURANT
 
 class Rezervare {
-
 private:
 	const int idRezervare;
 	static int nrTotalComenzi;
@@ -43,7 +43,7 @@ public:
 	}
 
 	void setNrTelefon(string NrTelefon) {
-		if (this->nrTelefon.length() > 9) {
+		if (nrTelefon.length() > 9) {
 			this->nrTelefon = nrTelefon;
 		}
 	}
@@ -53,7 +53,7 @@ public:
 	}
 
 	void setDataRezervare(string dataRezervare) {
-		if (this->dataRezervare.length() > 0) {
+		if (dataRezervare.length() > 0) {
 			this->dataRezervare = dataRezervare;
 		}
 	}
@@ -63,7 +63,7 @@ public:
 	}
 
 	void setMasaRezervare(int masaRezervare) {
-		if (this->masaRezervare > 0) {
+		if (masaRezervare > 0) {
 			this->masaRezervare = masaRezervare;
 		}
 	}
@@ -73,7 +73,7 @@ public:
 	}
 
 	void setDurataRezervare(float durataRezervare) {
-		if (this->durataRezervare > 0) {
+		if (durataRezervare > 0) {
 			this->durataRezervare = durataRezervare;
 		}
 	}
@@ -83,7 +83,7 @@ public:
 	}
 
 	void setStatus(bool status) {
-		if (this->status == true || this->status == false) {
+		if (status == true || status == false) {
 			this->status = status;
 		}
 	}
@@ -179,6 +179,9 @@ public:
 
 	friend ostream& operator<<(ostream& ost, const Rezervare& r);
 	friend istream& operator>>(istream& ist, Rezervare& r);
+	friend ofstream& operator<<(ofstream& ost, const Rezervare& r);
+	friend ifstream& operator>>(ifstream& ist, Rezervare& r);
+
 };
 
 ostream& operator<<(ostream& ost, const Rezervare& r) {
@@ -208,6 +211,25 @@ istream& operator>>(istream& ist, Rezervare& r) {
 	ist >> r.status;
 	return ist;
 }
+
+ofstream& operator<<(ofstream& ost, const Rezervare& r) {
+
+	ost << r.numeClient << " " << r.nrTelefon << " " << r.dataRezervare << " " << r.masaRezervare << " " << r.durataRezervare << " ";
+	ost << r.status << " ";
+	ost << endl;
+	return ost;
+}
+
+ifstream& operator>>(ifstream& ist, Rezervare& r) {
+	ist >> r.numeClient;
+	ist >> r.nrTelefon;
+	ist >> r.dataRezervare;
+	ist >> r.masaRezervare;
+	ist >> r.durataRezervare;
+	ist >> r.status;
+	return ist;
+}
+
 
 int Rezervare::nrTotalComenzi = 0;
 
@@ -248,7 +270,7 @@ public:
 	}
 
 	void setPret(float pret) {
-		if (this->pret > 0) {
+		if (pret > 0) {
 			this->pret = pret;
 		}
 	}
@@ -258,7 +280,7 @@ public:
 	}
 
 	void setDurataMeniu(int durataMeniu) {
-		if (this->durataMeniu > 0) {
+		if (durataMeniu > 0) {
 			this->durataMeniu = durataMeniu;
 		}
 	}
@@ -268,7 +290,7 @@ public:
 	}
 
 	void setDescriereMeniu(string descriereMeniu) {
-		if (this->descriereMeniu.length() > 0) {
+		if (descriereMeniu.length() > 0) {
 			this->descriereMeniu = descriereMeniu;
 		}
 	}
@@ -278,7 +300,7 @@ public:
 	}
 
 	void setVegan(bool vegan) {
-		if (this->vegan == true || this->vegan == false) {
+		if (vegan == true || vegan == false) {
 			this->vegan = vegan;
 		}
 	}
@@ -366,10 +388,13 @@ public:
 
 	friend ostream& operator<<(ostream& ost, const Meniu& m);
 	friend istream& operator>>(istream& ist, Meniu& m);
+	friend ofstream& operator<<(ofstream& ost, const Meniu& m);
+	friend ifstream& operator>>(ifstream& ist, Meniu& m);
+
 };
 
 ostream& operator<<(ostream& ost, const Meniu& m) {
-	cout << m.numeMeniu << ", "
+	ost << m.numeMeniu << ", "
 		<< m.descriereMeniu << " are pretul de "
 		<< m.pret << " RON " << "cu durata de preparare de "
 		<< m.durataMeniu << " minute, fiind "
@@ -391,6 +416,22 @@ istream& operator>>(istream& ist, Meniu& m) {
 	ist >> m.vegan;
 	return ist;
 }
+
+ofstream& operator<<(ofstream& ost, const Meniu& m) {
+	ost << m.numeMeniu << " " << m.descriereMeniu << " " << m.pret << " " << m.durataMeniu << " " << m.vegan;
+	ost << endl;
+	return ost;
+}
+
+ifstream& operator>>(ifstream& ist, Meniu& m) {
+	ist >> m.numeMeniu;
+	ist >> m.descriereMeniu;
+	ist >> m.pret;
+	ist >> m.durataMeniu;
+	ist >> m.vegan;
+	return ist;
+}
+
 
 int Meniu::nrTotalMeniuri = 0;
 
@@ -433,7 +474,7 @@ public:
 	}
 
 	void setVarsta(int varsta) {
-		if (this->varsta >= 18) {
+		if (varsta >= 18) {
 			this->varsta = varsta;
 		}
 	}
@@ -443,7 +484,7 @@ public:
 	}
 
 	void setExperienta(int experienta) {
-		if (this->experienta > 0) {
+		if (experienta > 0) {
 			this->experienta = experienta;
 		}
 	}
@@ -453,7 +494,7 @@ public:
 	}
 
 	void setSalariu(float salariu) {
-		if (this->salariu >= 1000) {
+		if (salariu >= 1000) {
 			this->salariu = salariu;
 		}
 	}
@@ -463,7 +504,7 @@ public:
 	}
 
 	void setBacsis(float bacsis) {
-		if (this->bacsis >= 50) {
+		if (bacsis >= 50) {
 			this->bacsis = bacsis;
 		}
 	}
@@ -473,7 +514,7 @@ public:
 	}
 
 	void setMeseServite(int meseServite) {
-		if (this->meseServite > 0) {
+		if (meseServite > 0) {
 			this->meseServite = meseServite;
 		}
 	}
@@ -483,7 +524,7 @@ public:
 	}
 
 	void setDisponibil(bool disponibil) {
-		if (this->disponibil == true || this->disponibil == false) {
+		if (disponibil == true || disponibil == false) {
 			this->disponibil = disponibil;
 		}
 	}
@@ -585,6 +626,9 @@ public:
 
 	friend ostream& operator<<(ostream& ost, const Ospatar& o);
 	friend istream& operator>>(istream& ist, Ospatar& o);
+	friend ofstream& operator<<(ofstream& ost, const Ospatar& o);
+	friend ifstream& operator>>(ifstream& ist, Ospatar& o);
+
 };
 
 class Restaurant {
@@ -711,6 +755,8 @@ public:
 
 	friend ostream& operator<<(ostream& ost, const Restaurant& res);
 	friend istream& operator>>(istream& ist, Restaurant& res);
+	friend ofstream& operator<<(ofstream& ost, const Restaurant& res);
+	friend ifstream& operator>>(ifstream& ist, Restaurant& res);
 
 
 	Restaurant operator++() {
@@ -735,7 +781,6 @@ ostream& operator<<(ostream& ost, const Restaurant& res) {
 		ost << res.ospatari[i];
 		ost << "\n";
 	}
-
 	return ost;
 }
 
@@ -753,7 +798,6 @@ istream& operator>>(istream& ist, Restaurant& res) {
 		ist >> res.meniuri[i];
 		cout << "\n";
 	}
-
 	cout << "Ospatari: ";
 	for (int i = 0; i < res.ospatari.size(); i++) {
 		ist >> res.ospatari[i];
@@ -763,8 +807,34 @@ istream& operator>>(istream& ist, Restaurant& res) {
 }
 
 
+ofstream& operator<<(ofstream& ost, const Restaurant& res) {
+	ost << res.nume << " " << res.patron << " " << res.cifraDeAfaceri << " " << res.capacitate << endl;
+	for (int i = 0; i < res.nrMeniuri; i++) {
+		ost << res.meniuri[i];
+	}
+	for (int i = 0; i < res.ospatari.size(); i++) {
+		ost << res.ospatari[i];
+	}
+	return ost;
+}
+
+ifstream& operator>>(ifstream& ist, Restaurant& res) {
+	ist >> res.nume;
+	ist >> res.patron;
+	ist >> res.cifraDeAfaceri;
+	ist >> res.capacitate;
+	for (int i = 0; i < res.nrMeniuri; i++) {
+		ist >> res.meniuri[i];
+	}
+	for (int i = 0; i < res.ospatari.size(); i++) {
+		ist >> res.ospatari[i];
+	}
+	return ist;
+}
+
+
 ostream& operator<<(ostream& ost, const Ospatar& o) {
-	cout << "Ospatarul cu numele "
+	ost << "Ospatarul cu numele "
 		<< o.nume << " are varsta de "
 		<< o.varsta << " ani, experienta de "
 		<< o.experienta << " ani, salariu pe luna de "
@@ -794,6 +864,24 @@ istream& operator>>(istream& ist, Ospatar& o) {
 	return ist;
 }
 
+
+ofstream& operator<<(ofstream& ost, const Ospatar& o) {
+	ost << o.nume << " " << o.varsta << " " << o.experienta << " " << o.salariu << " " << o.bacsis << " " << o.meseServite << " " << o.disponibil;
+	ost << endl;
+	return ost;
+}
+
+ifstream& operator>>(ifstream& ist, Ospatar& o) {
+	ist >> o.nume;
+	ist >> o.varsta;
+	ist >> o.experienta;
+	ist >> o.salariu;
+	ist >> o.bacsis;
+	ist >> o.meseServite;
+	ist >> o.disponibil;
+	return ist;
+}
+
 int Ospatar::nrTotalOspatari = 0;
 
 void procesareRezervare(Ospatar& ospatar, Rezervare& rezervare, Meniu& meniu) {
@@ -813,7 +901,7 @@ void medieBacsis(Ospatar& ospatar) {
 
 int main() {
 
-	/*Rezervare rez1;
+	Rezervare rez1;
 	rez1.afisareRezervare();
 	Rezervare rez2("0729988258", "9 mai");
 	rez2.afisareRezervare();
@@ -933,7 +1021,7 @@ int main() {
 				cout << mm[i][j];
 		}
 		cout << "\n";
-	}*/
+	}
 
 	Restaurant restaurant1;
 	Restaurant restaurant2;
@@ -969,7 +1057,6 @@ int main() {
 	cout << endl;
 
 	restaurant1.setOspatari(osp, 1);
-	//cout << restaurant1.getOspatari();
 	cout << endl;
 
 	restaurant1.setPatron("Pescobar");
@@ -981,6 +1068,45 @@ int main() {
 
 	++restaurant1;
 	cout << restaurant1;
+
+
+	Rezervare r5("0736945826", "17iunie");
+	ifstream fisIn("rezervari.txt", ios::in);
+	fisIn >> r5;
+
+	ofstream fisOut("rezervariOut.txt", ios::out);
+	fisOut << r5;
+	fisIn.close();
+	fisOut.close();
+
+
+	Restaurant restaurant5;
+	ifstream fisierIn("restaurante.txt", ios::in);
+	fisierIn >> restaurant5;
+
+	ofstream fisierOut("restauranteOut.txt", ios::out);
+	fisierOut << restaurant5;
+	fisierIn.close();
+	fisierOut.close();
+
+
+	Meniu meniu5;
+	ifstream fIn("meniuri.dat", ios::in | ios::binary);
+	fIn.read((char*)&meniu5, sizeof(Meniu));
+
+	ofstream fOut("meniuriOut.dat", ios::out | ios::binary);
+	fOut.write((char*)&meniu5, sizeof(Meniu));
+	fIn.close();
+	fOut.close();
+
+	Ospatar ospatar5;
+	ifstream fis_in("ospatari.dat", ios::in | ios::binary);
+	fis_in.read((char*)&ospatar5, sizeof(Ospatar));
+
+	ofstream fis_out("ospatariOut.dat", ios::out | ios::binary);
+	fis_out.write((char*)&ospatar5, sizeof(Ospatar));
+	fis_in.close();
+	fis_out.close();
 
 	return 0;
 }
