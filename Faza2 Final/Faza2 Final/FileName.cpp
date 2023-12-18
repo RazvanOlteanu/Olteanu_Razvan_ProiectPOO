@@ -230,13 +230,10 @@ ifstream& operator>>(ifstream& ist, Rezervare& r) {
 	return ist;
 }
 
-
 int Rezervare::nrTotalComenzi = 0;
 
 class Meniu {
-
 private:
-
 	const int idMeniu;
 	static int nrTotalMeniuri;
 	char* numeMeniu;
@@ -246,7 +243,6 @@ private:
 	bool vegan;
 
 public:
-
 	// get-eri si set-eri
 
 	static int getNrTotalMeniuri() {
@@ -390,7 +386,6 @@ public:
 	friend istream& operator>>(istream& ist, Meniu& m);
 	friend ofstream& operator<<(ofstream& ost, const Meniu& m);
 	friend ifstream& operator>>(ifstream& ist, Meniu& m);
-
 };
 
 ostream& operator<<(ostream& ost, const Meniu& m) {
@@ -432,13 +427,10 @@ ifstream& operator>>(ifstream& ist, Meniu& m) {
 	return ist;
 }
 
-
 int Meniu::nrTotalMeniuri = 0;
 
 class Ospatar {
-
-private:
-
+protected:
 	const int idOspatar;
 	static int nrTotalOspatari;
 	char* nume;
@@ -450,7 +442,6 @@ private:
 	bool disponibil;
 
 public:
-
 	// get-eri si set-eri
 
 	static int getNrTotalOspatari() {
@@ -628,7 +619,111 @@ public:
 	friend istream& operator>>(istream& ist, Ospatar& o);
 	friend ofstream& operator<<(ofstream& ost, const Ospatar& o);
 	friend ifstream& operator>>(ifstream& ist, Ospatar& o);
+};
 
+
+class Picol :public Ospatar {
+private:
+	int aniUcenicie;
+public:
+	int getAniUcenicie() {
+		return this->aniUcenicie;
+	}
+
+	void setAniUcenicie(int aniUcenicie) {
+		if (this->aniUcenicie > 0) {
+			this->aniUcenicie = aniUcenicie;
+		}
+	}
+
+	Picol() : Ospatar() {
+		this->nume = new char[strlen("Andrei") + 1];
+		strcpy(this->nume, "Andrei");
+		this->varsta = 25;
+		this->experienta = 2;
+		this->salariu = 3500;
+		this->bacsis = 100;
+		this->meseServite = 15;
+		this->disponibil = true;
+		this->aniUcenicie = 2;
+	}
+
+	Picol(int varsta, float bacsis) : Ospatar() {
+		this->nume = new char[strlen("Andrei") + 1];
+		strcpy(this->nume, "Andrei");
+		this->varsta = varsta;
+		this->experienta = 2;
+		this->salariu = 3500;
+		this->bacsis = bacsis;
+		this->meseServite = 15;
+		this->disponibil = true;
+		this->aniUcenicie = 2;
+	}
+
+	void afisareOspatar() {
+		cout << "Ospatarul cu numele "
+			<< nume << " are varsta de "
+			<< varsta << " ani, experienta de "
+			<< experienta << " ani, salariu pe luna de "
+			<< salariu << " RON, face bacsis de "
+			<< bacsis << " RON pe zi" << " si are o medie de "
+			<< meseServite << " mese servite pe zi, fiind "
+			<< (disponibil ? " disponibil" : " indisponibil")
+			<< " si avand " << aniUcenicie << " ani de ucenicie"
+			<< endl;
+	}
+};
+
+class Debarasator :public Ospatar {
+private:
+	int maxFarfurii;
+public:
+	int getMaxFarfurii() {
+		return this->maxFarfurii;
+	}
+
+	void setMaxFarfurii(int maxFarfurii) {
+		if (this->maxFarfurii > 0) {
+			this->maxFarfurii = maxFarfurii;
+		}
+	}
+
+	Debarasator() : Ospatar() {
+		this->nume = new char[strlen("Andrei") + 1];
+		strcpy(this->nume, "Andrei");
+		this->varsta = 25;
+		this->experienta = 2;
+		this->salariu = 3500;
+		this->bacsis = 100;
+		this->meseServite = 15;
+		this->disponibil = true;
+		this->maxFarfurii = 10;
+	}
+
+	Debarasator(int varsta, float bacsis) : Ospatar() {
+		this->nume = new char[strlen("Andrei") + 1];
+		strcpy(this->nume, "Andrei");
+		this->varsta = varsta;
+		this->experienta = 2;
+		this->salariu = 3500;
+		this->bacsis = bacsis;
+		this->meseServite = 15;
+		this->disponibil = true;
+		this->maxFarfurii = 12;
+	}
+
+	void afisareOspatar() {
+		cout << "Ospatarul cu numele "
+			<< nume << " are varsta de "
+			<< varsta << " ani, experienta de "
+			<< experienta << " ani, salariu pe luna de "
+			<< salariu << " RON, face bacsis de "
+			<< bacsis << " RON pe zi" << " si are o medie de "
+			<< meseServite << " mese servite pe zi, fiind "
+			<< (disponibil ? " disponibil" : " indisponibil")
+			<< " si poate cara maxim " << maxFarfurii << " farfurii"
+			<< endl;
+	}
 };
 
 class Restaurant {
@@ -752,12 +847,10 @@ public:
 		this->patron = "Giovanni";
 	}
 
-
 	friend ostream& operator<<(ostream& ost, const Restaurant& res);
 	friend istream& operator>>(istream& ist, Restaurant& res);
 	friend ofstream& operator<<(ofstream& ost, const Restaurant& res);
 	friend ifstream& operator>>(ifstream& ist, Restaurant& res);
-
 
 	Restaurant operator++() {
 		this->cifraDeAfaceri += 10000;
@@ -806,7 +899,6 @@ istream& operator>>(istream& ist, Restaurant& res) {
 	return ist;
 }
 
-
 ofstream& operator<<(ofstream& ost, const Restaurant& res) {
 	ost << res.nume << " " << res.patron << " " << res.cifraDeAfaceri << " " << res.capacitate << endl;
 	for (int i = 0; i < res.nrMeniuri; i++) {
@@ -831,7 +923,6 @@ ifstream& operator>>(ifstream& ist, Restaurant& res) {
 	}
 	return ist;
 }
-
 
 ostream& operator<<(ostream& ost, const Ospatar& o) {
 	ost << "Ospatarul cu numele "
@@ -863,7 +954,6 @@ istream& operator>>(istream& ist, Ospatar& o) {
 	ist >> o.disponibil;
 	return ist;
 }
-
 
 ofstream& operator<<(ofstream& ost, const Ospatar& o) {
 	ost << o.nume << " " << o.varsta << " " << o.experienta << " " << o.salariu << " " << o.bacsis << " " << o.meseServite << " " << o.disponibil;
@@ -898,10 +988,9 @@ void medieBacsis(Ospatar& ospatar) {
 	cout << "Ospatarul " << ospatar.nume << " a castigat in medie " << medie << " lei";
 }
 
-
 int main() {
 
-	Rezervare rez1;
+	/*Rezervare rez1;
 	rez1.afisareRezervare();
 	Rezervare rez2("0729988258", "9 mai");
 	rez2.afisareRezervare();
@@ -1106,7 +1195,20 @@ int main() {
 	ofstream fis_out("ospatariOut.dat", ios::out | ios::binary);
 	fis_out.write((char*)&ospatar5, sizeof(Ospatar));
 	fis_in.close();
-	fis_out.close();
+	fis_out.close();*/
+
+
+	Picol p1;
+	Ospatar* p1p = &p1;
+
+	p1p->afisareOspatar();
+	p1.afisareOspatar();
+
+	Debarasator d1;
+	Ospatar* d1p = &d1;
+
+	d1p->afisareOspatar();
+	d1.afisareOspatar();
 
 	return 0;
 }
