@@ -8,6 +8,165 @@ using namespace std;
 
 // Domeniul - RESTAURANT
 
+class Persoana {
+protected:
+	char* nume;
+	int varsta;
+	float inaltime;
+	float greutate;
+public:
+	virtual void cresteVarsta() = 0;
+
+	Persoana() {
+		this->nume = new char[strlen("Anonim") + 1];
+		strcpy(this->nume, "Anonim");
+		this->varsta = 25;
+		this->inaltime = 182;
+		this->greutate = 75;
+	}
+
+	Persoana(int varsta, float greutate) {
+		this->nume = new char[strlen("Anonim") + 1];
+		strcpy(this->nume, "Anonim");
+		this->varsta = varsta;
+		this->inaltime = 180;
+		this->greutate = greutate;
+	}
+
+	Persoana(Persoana& p1) {
+		this->nume = new char[strlen(p1.nume) + 1];
+		strcpy(this->nume, p1.nume);
+		this->varsta = p1.varsta;
+		this->inaltime = p1.inaltime;
+		this->greutate = p1.greutate;
+	}
+
+	virtual ~Persoana() {
+		cout << "Apel destructor Persoana" << endl;
+		if (nume != NULL) {
+			delete[]this->nume;
+		}
+	}
+
+	char* getNume() {
+		return this->nume;
+	}
+
+	void setNume(char* numeNou) {
+		if (this->nume != NULL) {
+			delete[]this->nume;
+		}
+		this->nume = new char[strlen(numeNou) + 1];
+		strcpy(this->nume, numeNou);
+	}
+
+	int getVarsta() {
+		return this->varsta;
+	}
+
+	void setVarsta(int varsta) {
+		if (varsta >= 18) {
+			this->varsta = varsta;
+		}
+	}
+
+	float getInaltime() {
+		return this->inaltime;
+	}
+
+	void setInaltime(float inaltime) {
+		if (inaltime > 150) {
+			this->varsta = varsta;
+		}
+	}
+
+	float getGreutate() {
+		return this->greutate;
+	}
+
+	void setGreutate(float greutate) {
+		if (greutate > 40) {
+			this->greutate = greutate;
+		}
+	}
+};
+
+class Firma {
+protected:
+	string industrie;
+	string nume;
+	long long cifraDeAfaceri;
+	string patron;
+public:
+	virtual void cresteCifraDeAfaceri() = 0;
+
+	Firma() {
+		this->industrie = "Horeca";
+		this->nume = "GenericName";
+		this->cifraDeAfaceri = 1000000;
+		this->patron = "Berlusconi";
+	}
+
+	Firma(string industrie, long long cifraDeAfaceri) {
+		this->industrie = industrie;
+		this->nume = "Hanul_Cu_Tei";
+		this->cifraDeAfaceri = cifraDeAfaceri;
+		this->patron = "Don_Giovanni";
+	}
+
+	Firma(Firma& f1) {
+		this->industrie = f1.industrie;
+		this->nume = f1.nume;
+		this->cifraDeAfaceri = f1.cifraDeAfaceri;
+		this->patron = f1.patron;
+	}
+
+	virtual ~Firma() {
+		cout << "Apel destructor Persoana" << endl;
+	}
+
+	string getIndustrie() {
+		return this->industrie;
+	}
+
+	void setIndustrie(string industrie) {
+		if (industrie.length() > 0) {
+			this->industrie = industrie;
+		}
+	}
+
+	string getNume() {
+		return this->nume;
+	}
+
+	void setNume(string nume) {
+		if (nume.length() > 3) {
+			this->nume = nume;
+		}
+	}
+
+	long long getCifraDeAfaceri() {
+		return this->cifraDeAfaceri;
+	}
+
+	void setCifraDeAfaceri(long long cifraDeAfaceri) {
+		if (cifraDeAfaceri > 0) {
+			this->cifraDeAfaceri = cifraDeAfaceri;
+		}
+	}
+
+	string getPatron() {
+		return this->patron;
+	}
+
+	void setPatron(string patron) {
+		if (patron.length() > 3) {
+			this->patron = patron;
+		}
+	}
+};
+
+
 class Rezervare {
 private:
 	const int idRezervare;
@@ -429,12 +588,10 @@ ifstream& operator>>(ifstream& ist, Meniu& m) {
 
 int Meniu::nrTotalMeniuri = 0;
 
-class Ospatar {
+class Ospatar : public Persoana {
 protected:
 	const int idOspatar;
 	static int nrTotalOspatari;
-	char* nume;
-	int varsta;
 	int experienta; // ani
 	float salariu;
 	float bacsis;
@@ -446,28 +603,6 @@ public:
 
 	static int getNrTotalOspatari() {
 		return nrTotalOspatari;
-	}
-
-	char* getNume() {
-		return this->nume;
-	}
-
-	void setNume(char* numeNou) {
-		if (this->nume != NULL) {
-			delete[]this->nume;
-		}
-		this->nume = new char[strlen(numeNou) + 1];
-		strcpy(this->nume, numeNou);
-	}
-
-	int getVarsta() {
-		return this->varsta;
-	}
-
-	void setVarsta(int varsta) {
-		if (varsta >= 18) {
-			this->varsta = varsta;
-		}
 	}
 
 	int getExperienta() {
@@ -522,7 +657,7 @@ public:
 
 	// Constructorul de copiere
 
-	Ospatar(const Ospatar& ospatar1) :idOspatar(nrTotalOspatari) {
+	Ospatar(const Ospatar& ospatar1) : idOspatar(nrTotalOspatari) {
 		this->nume = new char[strlen(ospatar1.nume) + 1];
 		strcpy(this->nume, ospatar1.nume);
 		this->varsta = ospatar1.varsta;
@@ -535,10 +670,7 @@ public:
 
 	// Constructorul fara parametrii
 
-	Ospatar() : idOspatar(nrTotalOspatari++) {
-		this->nume = new char[strlen("Andrei") + 1];
-		strcpy(this->nume, "Andrei");
-		this->varsta = 25;
+	Ospatar() : Persoana(), idOspatar(nrTotalOspatari++) {
 		this->experienta = 2;
 		this->salariu = 3500;
 		this->bacsis = 100;
@@ -548,7 +680,7 @@ public:
 
 	// Constructori cu parametrii
 
-	Ospatar(const char* nume, int varsta) : idOspatar(nrTotalOspatari) {
+	Ospatar(const char* nume, int varsta) : Persoana(), idOspatar(nrTotalOspatari) {
 		nrTotalOspatari++;
 		this->nume = new char[strlen(nume) + 1];
 		strcpy(this->nume, nume);
@@ -575,7 +707,7 @@ public:
 	// Destructorul
 
 	~Ospatar() {
-		delete[] nume;
+
 	}
 
 	void afisareOspatar() {
@@ -619,6 +751,12 @@ public:
 	friend istream& operator>>(istream& ist, Ospatar& o);
 	friend ofstream& operator<<(ofstream& ost, const Ospatar& o);
 	friend ifstream& operator>>(ifstream& ist, Ospatar& o);
+
+	void cresteVarsta() override {
+		cout << "Varsta si experienta ospatarului " << nume << " au crescut!" << endl;
+		this->varsta++;
+		this->experienta++;
+	}
 };
 
 
@@ -726,15 +864,12 @@ public:
 	}
 };
 
-class Restaurant {
-private:
+class Restaurant : public Firma {
+protected:
 	int nrMeniuri;
 	Meniu* meniuri;
 	vector <Ospatar> ospatari;
-	string nume;
-	long long cifraDeAfaceri;
-	int capacitate; //locuri
-	string patron;
+	int capacitate;
 
 public:
 
@@ -776,26 +911,6 @@ public:
 		}
 	}
 
-	string getNume() {
-		return this->nume;
-	}
-
-	void setNume(string nume) {
-		if (nume.length() > 3) {
-			this->nume = nume;
-		}
-	}
-
-	long long getCifraDeAfaceri() {
-		return this->cifraDeAfaceri;
-	}
-
-	void setCifraDeAfaceri(long long cifraDeAfaceri) {
-		if (cifraDeAfaceri > 0) {
-			this->cifraDeAfaceri = cifraDeAfaceri;
-		}
-	}
-
 	int getCapacitate() {
 		return this->capacitate;
 	}
@@ -803,16 +918,6 @@ public:
 	void setCapacitate(int capacitate) {
 		if (capacitate > 0) {
 			this->capacitate = capacitate;
-		}
-	}
-
-	string getPatron() {
-		return this->patron;
-	}
-
-	void setPatron(string patron) {
-		if (patron.length() > 3) {
-			this->patron = patron;
 		}
 	}
 
@@ -856,6 +961,11 @@ public:
 		this->cifraDeAfaceri += 10000;
 		this->capacitate += 10;
 		return *this;
+	}
+
+	void cresteCifraDeAfaceri() override {
+		cout << "Cifra de afaceri a crescut!" << endl;
+		this->cifraDeAfaceri = this->cifraDeAfaceri + 50000;
 	}
 };
 
@@ -1158,7 +1268,6 @@ int main() {
 	++restaurant1;
 	cout << restaurant1;
 
-
 	Rezervare r5("0736945826", "17iunie");
 	ifstream fisIn("rezervari.txt", ios::in);
 	fisIn >> r5;
@@ -1168,7 +1277,6 @@ int main() {
 	fisIn.close();
 	fisOut.close();
 
-
 	Restaurant restaurant5;
 	ifstream fisierIn("restaurante.txt", ios::in);
 	fisierIn >> restaurant5;
@@ -1177,7 +1285,6 @@ int main() {
 	fisierOut << restaurant5;
 	fisierIn.close();
 	fisierOut.close();
-
 
 	Meniu meniu5;
 	ifstream fIn("meniuri.dat", ios::in | ios::binary);
@@ -1197,8 +1304,7 @@ int main() {
 	fis_in.close();
 	fis_out.close();*/
 
-
-	Picol p1;
+	/*Picol p1;
 	Ospatar* p1p = &p1;
 
 	p1p->afisareOspatar();
@@ -1208,7 +1314,39 @@ int main() {
 	Ospatar* d1p = &d1;
 
 	d1p->afisareOspatar();
-	d1.afisareOspatar();
+	d1.afisareOspatar();*/
+
+	Ospatar o20, o21, o22, o23, o24, o25, o26, o27, o28, o29;
+	Persoana* persoane[10];
+	persoane[0] = &o20;
+	persoane[0]->cresteVarsta();
+
+	persoane[1] = &o21;
+	persoane[1]->cresteVarsta();
+
+	persoane[2] = &o22;
+	persoane[2]->cresteVarsta();
+
+	persoane[3] = &o23;
+	persoane[3]->cresteVarsta();
+
+	persoane[4] = &o24;
+	persoane[4]->cresteVarsta();
+
+	persoane[5] = &o25;
+	persoane[5]->cresteVarsta();
+
+	persoane[6] = &o26;
+	persoane[6]->cresteVarsta();
+
+	persoane[7] = &o27;
+	persoane[7]->cresteVarsta();
+
+	persoane[8] = &o28;
+	persoane[8]->cresteVarsta();
+
+	persoane[9] = &o29;
+	persoane[9]->cresteVarsta();
 
 	return 0;
 }
